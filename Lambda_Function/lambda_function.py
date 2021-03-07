@@ -10,9 +10,9 @@ def get_member(id):
             'MemberId': id
         }
     )
-    return response['Item']#リストやタプルの表記
+    return response['Item']#取得したItemは辞書型のためリストやタプルの表記
 
 def lambda_handler(event, context):#ラムダ関数で呼び出される関数名と引数
     #「Runtime settings」のlambda_function.lambda_handler
-    member = get_member('001')#関数にid=001が入り呼び出される
+    member = get_member(event['MemberId'])#関数にid=001が入り呼び出される
     return member
