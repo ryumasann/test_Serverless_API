@@ -1,3 +1,0 @@
-{
-    "MemberId" : "$input.params('MemberId')"
-}
