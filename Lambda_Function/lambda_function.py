@@ -25,6 +25,7 @@ def lambda_handler(event, context):#ラムダ関数で呼び出される関数�
         return strTableName, dicTableItems
     
     except NameError:
-        return "レコードが存在しません"
+        noRet = {"message":"There is no corresponding record"}
+        return noRet
     #member = get_member(event['MemberId'])#関数にid=001が入り呼び出される
     #return member
