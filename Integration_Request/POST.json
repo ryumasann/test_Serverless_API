@@ -1,0 +1,14 @@
+Mappingテンプレート(今回は使用しない)
+    {
+        "MemberId": $input.json("$.memberId"),
+        "MemberName": $input.json("$.memberName")
+    }
+
+headerがapplication/jsonのときのリクエストbody
+    {
+        "MemberId": "10",
+        "MemberName": "fromGateway"
+    }
+
+curlだと以下のように実現
+curl -H 'Content-Type: application/json' POST -v -d '{"MemberId":"11","MemberName":"fromCurl"}'
