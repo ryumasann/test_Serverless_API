@@ -14,7 +14,17 @@ table = dynamodb.Table('MemberTable')
 
     #「Runtime settings」のlambda_function.lambda_handler
 def lambda_handler(event, context):#ラムダ関数で呼び出される関数名と引数
-    response = table.scan()
-    return response
+    tableData = table.scan(
+        #ReturnConsumedCapacity='TOTAL'を入れないとテーブル名を取得できない
+        ReturnConsumedCapacity='TOTAL'
+        )
+    try:
+        #scanでデータを取得できない場合は変数がからのためNameError
+        strTableName = tableData['ConsumedCapacity']['TableName']
+        dicTableItems = tableData['Items']
+        return strTableName, dicTableItems
+    
+    except NameError:
+        return "レコードが存在しません"
     #member = get_member(event['MemberId'])#関数にid=001が入り呼び出される
     #return member
