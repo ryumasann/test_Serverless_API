@@ -14,7 +14,7 @@ table = dynamodb.Table('MemberTable')
 
     #「Runtime settings」のlambda_function.lambda_handler
 def lambda_handler(event, context):#ラムダ関数で呼び出される関数名と引数
-    #eventはpathパラメタ、contextは
+    #eventでパラメタを受け取る
     if len(event) == 0:
     #GET処理(パラメーターを渡さない想定)
         tableData = table.scan(
