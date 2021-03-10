@@ -15,30 +15,30 @@ table = dynamodb.Table('MemberTable')
     #「Runtime settings」のlambda_function.lambda_handler
 def lambda_handler(event, context):#ラムダ関数で呼び出される関数名と引数
     #eventでパラメタを受け取る
-    if len(event) == 0:
-    #GET処理(パラメーターを渡さない想定)
-        tableData = table.scan(
-            #ReturnConsumedCapacity='TOTAL'を入れないとテーブル名を取得できない
-            ReturnConsumedCapacity='TOTAL'
-            )
-        try:
-            #scanでデータを取得できない場合は変数がからのためNameError
-            strTableName = tableData['ConsumedCapacity']['TableName']
-            dicTableItems = tableData['Items']
-            return strTableName, dicTableItems
-        
-        except NameError:
-            noRet = {"message":"There is no corresponding record"}
-            return noRet
-        #member = get_member(event['MemberId'])#関数にid=001が入り呼び出される
-        #return member
-    else:
+    if not len(event) == 0:
     #POST処理
         item = {
             "MemberId": str(event["MemberId"]),
             "Name": str(event["MemberName"])
-        }
-        
+        }        
         table.put_item(Item=item)
         
-        return event
+        return getTableData()
+    else:
+        try:
+            return getTableData()
+        except NameError:
+            noRet = {"message":"There is no corresponding record"}
+            return noRet
+
+    
+def getTableData():
+    #GET処理(パラメーターを渡さない想定)
+    tableData = table.scan(
+        #ReturnConsumedCapacity='TOTAL'を入れないとテーブル名を取得できない
+        ReturnConsumedCapacity='TOTAL'
+        )
+    #scanでデータを取得できない場合は変数がからのためNameError
+    strTableName = tableData['ConsumedCapacity']['TableName']
+    dicTableItems = tableData['Items']
+    return (strTableName, dicTableItems)  
